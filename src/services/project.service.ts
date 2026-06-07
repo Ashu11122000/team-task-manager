@@ -1,7 +1,7 @@
-import {
-  projectRepository,
-} from "@/repositories";
 import { Types } from "mongoose";
+
+import { projectRepository } from "@/repositories";
+import { AppError } from "@/lib/app-error";
 
 export class ProjectService {
   async createProject(
@@ -29,8 +29,9 @@ export class ProjectService {
       );
 
     if (!project) {
-      throw new Error(
-        "Project not found"
+      throw new AppError(
+        "Project not found",
+        404
       );
     }
 
@@ -39,7 +40,9 @@ export class ProjectService {
 
   async updateProject(
     projectId: string,
-    data: Parameters<typeof projectRepository.update>[1]
+    data: Parameters<
+      typeof projectRepository.update
+    >[1]
   ) {
     const project =
       await projectRepository.update(
@@ -48,8 +51,9 @@ export class ProjectService {
       );
 
     if (!project) {
-      throw new Error(
-        "Project not found"
+      throw new AppError(
+        "Project not found",
+        404
       );
     }
 
@@ -65,8 +69,9 @@ export class ProjectService {
       );
 
     if (!project) {
-      throw new Error(
-        "Project not found"
+      throw new AppError(
+        "Project not found",
+        404
       );
     }
 
