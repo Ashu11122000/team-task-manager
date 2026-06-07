@@ -2,28 +2,32 @@ import jwt from "jsonwebtoken";
 
 import { env } from "@/config/env";
 
-export const generateToken = (
-    userId: string,
-    role: string
-) => {
-    return jwt.sign(
-        {
-            userId,
-            role,
-        },
+export interface JwtPayload {
+  userId: string;
+  role: string;
+}
 
-        env.JWT_SECRET,
-        {
-            expiresIn: "1d",
-        }
-    );
+export const generateToken = (
+  userId: string,
+  role: string
+) => {
+  return jwt.sign(
+    {
+      userId,
+      role,
+    },
+    env.JWT_SECRET,
+    {
+      expiresIn: "1d",
+    }
+  );
 };
 
 export const verifyToken = (
-    token: string
-) => {
-    return jwt.verify(
-        token,
-        env.JWT_SECRET
-    );
+  token: string
+): JwtPayload => {
+  return jwt.verify(
+    token,
+    env.JWT_SECRET
+  ) as JwtPayload;
 };

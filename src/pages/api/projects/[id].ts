@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
 import { connectDB } from "@/config/database";
-import { TaskController } from "@/controllers";
+import { ProjectController } from "@/controllers";
 
 export default async function handler(
   req: NextApiRequest,
@@ -11,13 +11,19 @@ export default async function handler(
 
   switch (req.method) {
     case "GET":
-      return TaskController.getAll(
+      return ProjectController.getById(
         req,
         res
       );
 
-    case "POST":
-      return TaskController.create(
+    case "PUT":
+      return ProjectController.update(
+        req,
+        res
+      );
+
+    case "DELETE":
+      return ProjectController.delete(
         req,
         res
       );
