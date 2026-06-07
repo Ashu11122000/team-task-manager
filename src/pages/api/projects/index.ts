@@ -9,6 +9,50 @@ import { runMiddleware } from "@/middleware/run-middleware";
 
 import { AuthenticatedRequest } from "@/types/api.types";
 
+/**
+ * @swagger
+ * /api/projects:
+ *   get:
+ *     summary: Get all projects
+ *     tags:
+ *       - Projects
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of projects
+ *       401:
+ *         description: Unauthorized
+ *
+ *   post:
+ *     summary: Create project
+ *     tags:
+ *       - Projects
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: E-Commerce Platform
+ *               description:
+ *                 type: string
+ *                 example: Backend project for team management
+ *     responses:
+ *       201:
+ *         description: Project created
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Admin access required
+ */
 export default async function handler(
   req: AuthenticatedRequest,
   res: NextApiResponse

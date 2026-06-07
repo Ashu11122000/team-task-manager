@@ -1,4 +1,9 @@
-import { NextApiRequest, NextApiResponse } from "next";
+// src/pages/api/swagger.ts
+
+import type {
+  NextApiRequest,
+  NextApiResponse,
+} from "next";
 
 import { swaggerSpec } from "@/config/swagger";
 

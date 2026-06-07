@@ -1,19 +1,36 @@
-import swaggerJSDoc from "swagger-jsdoc";
+import swaggerJSDoc, {
+  Options,
+} from "swagger-jsdoc";
 
-export const swaggerSpec = swaggerJSDoc({
+const options: Options = {
   definition: {
     openapi: "3.0.0",
     info: {
       title: "Team Task Manager API",
       version: "1.0.0",
+      description:
+        "Team Task Manager API Documentation",
     },
-    servers: [
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+    security: [
       {
-        url: "http://localhost:3000",
+        bearerAuth: [],
       },
     ],
   },
+
   apis: [
-    "./src/pages/api/**/*.ts",
+    "src/pages/api/**/*.ts",
   ],
-});
+};
+
+export const swaggerSpec =
+  swaggerJSDoc(options);

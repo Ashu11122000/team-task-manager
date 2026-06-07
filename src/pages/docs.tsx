@@ -1,14 +1,21 @@
 import dynamic from "next/dynamic";
+import Head from "next/head";
 
 const SwaggerUI = dynamic(
   () => import("swagger-ui-react"),
-  { ssr: false }
+  {
+    ssr: false,
+  }
 );
 
-import "swagger-ui-react/swagger-ui.css";
-
-import swaggerSpec from "@/swagger/swagger";
-
 export default function DocsPage() {
-  return <SwaggerUI spec={swaggerSpec} />;
+  return (
+    <>
+      <Head>
+        <title>API Documentation</title>
+      </Head>
+
+      <SwaggerUI url="/api/swagger" />
+    </>
+  );
 }
