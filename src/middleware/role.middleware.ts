@@ -11,15 +11,15 @@ export const roleMiddleware =
     res: NextApiResponse,
     next: () => void
   ) => {
-    if (
-      !roles.includes(
-        req.user.role
-      )
-    ) {
+    if (!req.user) {
+      return res.status(401).json(
+        errorResponse("Unauthorized")
+      );
+    }
+
+    if (!roles.includes(req.user.role)) {
       return res.status(403).json(
-        errorResponse(
-          "Access denied"
-        )
+        errorResponse("Access denied")
       );
     }
 

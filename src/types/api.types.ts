@@ -2,7 +2,7 @@ import { NextApiRequest } from "next";
 
 export interface AuthenticatedRequest
   extends NextApiRequest {
-  user: {
+  user?: {
     id: string;
     role: string;
   };
