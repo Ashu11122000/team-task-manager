@@ -24,3 +24,10 @@ export type CreateTaskInput =
 
 export type UpdateTaskInput =
     z.infer<typeof UpdateTaskSchema>;
+
+export const AssignTaskSchema = z.object({
+    assignedTo: z.string(),
+});
+
+export type AssignTaskInput =
+    z.infer<typeof AssignTaskSchema>;
