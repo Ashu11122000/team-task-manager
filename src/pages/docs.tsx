@@ -12,7 +12,9 @@ export default function DocsPage() {
   return (
     <>
       <Head>
-        <title>API Documentation</title>
+        <title>
+          Team Task Manager API Docs
+        </title>
       </Head>
 
       <SwaggerUI url="/api/swagger" />
