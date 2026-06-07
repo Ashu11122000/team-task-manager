@@ -86,6 +86,40 @@ export class TaskService {
 
     return task;
   }
+
+  async assignTask(
+    taskId: string,
+    userId: string
+) {
+    const task =
+        await taskRepository.assignTask(
+            taskId,
+            new ObjectId(userId)
+        );
+
+    if (!task) {
+        throw new Error("Task not found");
+    }
+
+    return task;
+}
+
+async updateTaskStatus(
+    taskId: string,
+    status: string
+) {
+    const task =
+        await taskRepository.updateStatus(
+            taskId,
+            status
+        );
+
+    if (!task) {
+        throw new Error("Task not found");
+    }
+
+    return task;
+}
 }
 
 export const taskService = new TaskService();
