@@ -1,10 +1,16 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiResponse } from "next";
 
 import { connectDB } from "@/config/database";
 import { ProjectController } from "@/controllers";
 
+import { authMiddleware } from "@/middleware/auth.middleware";
+import { roleMiddleware } from "@/middleware/role.middleware";
+import { runMiddleware } from "@/middleware/run-middleware";
+
+import { AuthenticatedRequest } from "@/types/api.types";
+
 export default async function handler(
-  req: NextApiRequest,
+  req: AuthenticatedRequest,
   res: NextApiResponse
 ) {
   await connectDB();
@@ -12,17 +18,46 @@ export default async function handler(
   try {
     switch (req.method) {
       case "GET":
-        return await ProjectController.getAll(
+        await runMiddleware(
           req,
+          res,
+          authMiddleware
+        );
+
+        if (!req.user) {
+          return res.status(401).json({ success: false, message: "Unauthorized" });
+        }
+
+        const authedReq = req as AuthenticatedRequest & { user: { id: string } };
+
+        return ProjectController.getAll(
+          authedReq,
           res
         );
 
       case "POST":
-        return res.status(501).json({
-          success: false,
-          message:
-            "JWT Authentication middleware not implemented yet",
-        });
+        await runMiddleware(
+          req,
+          res,
+          authMiddleware
+        );
+
+        if (!req.user) {
+          return res.status(401).json({ success: false, message: "Unauthorized" });
+        }
+
+        await runMiddleware(
+          req,
+          res,
+          roleMiddleware("ADMIN")
+        );
+
+        const authedReqPost = req as AuthenticatedRequest & { user: { id: string } };
+
+        return ProjectController.create(
+          authedReqPost,
+          res
+        );
 
       default:
         return res.status(405).json({
@@ -33,9 +68,10 @@ export default async function handler(
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: error instanceof Error
-        ? error.message
-        : "Internal Server Error",
+      message:
+        error instanceof Error
+          ? error.message
+          : "Internal Server Error",
     });
   }
 }
